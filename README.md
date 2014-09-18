@@ -41,5 +41,7 @@ create - Usage: create <local-file-path> <dest-path>
 rm     - Usage: rm <path>
 cd     - Usage: cd <path>
 pwd    - Usage: pwd
+login  - Usage: login <username> <password>
+whoami - Usage: whoami
 ---------------------------------------------------
 ```

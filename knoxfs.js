@@ -1,7 +1,6 @@
 var HDFSRequest = require('./hdfsmod');
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);
-
 var user = "guest";
 var pwd = "guest-password";
 var hostport = "localhost:8443";
@@ -58,6 +57,8 @@ rl.on('line', function(line) {
       console.log('rm     - Usage: rm <path> ');
       console.log('cd     - Usage: cd <path> ');
       console.log('pwd    - Usage: pwd ');
+      console.log('login  - Usage: login <username> <password>');
+      console.log('whoami - Usage: whoami ');
       console.log('---------------------------------------------------');
       break;
     default:
@@ -96,6 +97,14 @@ rl.on('line', function(line) {
         var array = line.split(" ");
         knox.rm({path: array[1]}, callback);
       }
+      else if (line.startsWith('login ')) {
+        var array = line.split(" ");
+        user = array[1];
+        pwd = array[2];
+      }
+      else if (line == 'whoami') {
+        console.log(user);
+      }
       else if (line.startsWith('cd ')) {
         var array = line.split(" ");
         if (typeof this.wd == 'undefined') this.wd = "/";
@@ -103,14 +112,6 @@ rl.on('line', function(line) {
            this.wd = array[1];
          }
          else if (".." == array[1]) {
-           // this.md = this.wd,
-           //     delimiter = '/',
-           //     start = 0,
-           //     end = -1,
-           //     tokens = this.md.split(delimiter).slice(start, end),
-           //     result = tokens.join(delimiter);
-           //  console.log(result);
-
            var dirs = this.wd.split('/');
            if (dirs.length > 1) {
              this.wd = "/";
