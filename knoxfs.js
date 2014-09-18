@@ -55,9 +55,9 @@ rl.on('line', function(line) {
       console.log('ls     - Usage: ls <path> ');
       console.log('open   - Usage: open <path> ');
       console.log('create - Usage: create <local-file-path> <dest-path> ');
-      console.log('rm - Usage: rm <path> ');
-      console.log('cd - Usage: cd <path> ');
-      console.log('pwd - Usage: pwd ');
+      console.log('rm     - Usage: rm <path> ');
+      console.log('cd     - Usage: cd <path> ');
+      console.log('pwd    - Usage: pwd ');
       console.log('---------------------------------------------------');
       break;
     default:
