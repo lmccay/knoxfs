@@ -38,8 +38,8 @@ Available KnoxFs Commands and Usage ---------------
 ls     - Usage: ls <path>
 open   - Usage: open <path>
 create - Usage: create <local-file-path> <dest-path>
-rm - Usage: rm <path>
-cd - Usage: cd <path>
-pwd - Usage: pwd
+rm     - Usage: rm <path>
+cd     - Usage: cd <path>
+pwd    - Usage: pwd
 ---------------------------------------------------
 ```
