@@ -1,10 +1,9 @@
 knoxfs
 ======
 
-Simple node.js CLI to interact with Hadoop behind an Apache Knox gateway
+A very simple node.js CLI to interact with Hadoop through an Apache Knox gateway
 
-Simple clone this project and install it with npm to get all of the dependencies and run.
-
+Simply clone this project and install it with npm to get all of the dependencies and run.
    
 ```
 cd knoxfs
