@@ -102,6 +102,23 @@ rl.on('line', function(line) {
         if (array[1].startsWith("/")) {
            this.wd = array[1];
          }
+         else if (".." == array[1]) {
+           // this.md = this.wd,
+           //     delimiter = '/',
+           //     start = 0,
+           //     end = -1,
+           //     tokens = this.md.split(delimiter).slice(start, end),
+           //     result = tokens.join(delimiter);
+           //  console.log(result);
+
+           var dirs = this.wd.split('/');
+           if (dirs.length > 1) {
+             this.wd = "/";
+             for (var i = 0; i < dirs.length-2; i++) {
+               this.wd += dirs[i];
+             }
+           }
+         }
          else {
           this.wd += array[1];
          }
