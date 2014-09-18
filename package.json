@@ -1,0 +1,19 @@
+{
+  "author": "Larry McCay <lmccay@apache.org>",
+  "name": "knoxfs",
+  "version": "0.0.1",
+  "description": "Simple node.js CLI to interact with Hadoop behind an Apache Knox gateway",
+  "main": "knoxfs.js",
+  "dependencies": {
+    "request": "~2.27.0",
+    "readline": "~0.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "licenses" : [{
+    "type": "Apache",
+    "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+  }]
+}
