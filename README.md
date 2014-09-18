@@ -3,7 +3,7 @@ knoxfs
 
 Simple node.js CLI to interact with Hadoop behind an Apache Knox gateway
 
-knoxfs>
+```knoxfs>
 KKKKKKKKK    KKKKKKK                                                     FFFFFFFFFFFFFFFFFFFFFF
 K:::::::K    K:::::K                                                     F::::::::::::::::::::F
 K:::::::K    K:::::K                                                     F::::::::::::::::::::F
@@ -19,7 +19,7 @@ KK::::::K  K:::::KKK  n::::n    n::::no::::o     o::::o  x::::::::::x      F::::
 K:::::::K   K::::::K  n::::n    n::::no:::::ooooo:::::o x:::::xx:::::x   FF:::::::FF        s:::::ssss::::::s
 K:::::::K    K:::::K  n::::n    n::::no:::::::::::::::ox:::::x  x:::::x  F::::::::FF        s::::::::::::::s
 K:::::::K    K:::::K  n::::n    n::::n oo:::::::::::oox:::::x    x:::::x F::::::::FF         s:::::::::::ss
-KKKKKKKKK    KKKKKKK  nnnnnn    nnnnnn   ooooooooooo xxxxxxx      xxxxxxxFFFFFFFFFFF          sssssssssss
+KKKKKKKKK    KKKKKKK  nnnnnn    nnnnnn   ooooooooooo xxxxxxx      xxxxxxxFFFFFFFFFFF          sssssssssss```
 
 Author: Larry McCay
 
