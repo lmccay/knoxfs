@@ -2,6 +2,12 @@ var HDFSRequest = require('./hdfsmod');
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);
 
+var user = "guest";
+var pwd = "guest-password";
+var hostport = "localhost:8443";
+var cluster = "sandbox";
+var wd = "/";
+
 rl.setPrompt('knoxfs> ');
 rl.prompt();
 
@@ -42,38 +48,69 @@ console.log("");
 
 rl.on('line', function(line) {
   switch(line.trim()) {
+    case '?':
     case 'help':
       console.log('');
       console.log('Available KnoxFs Commands and Usage ---------------');
       console.log('ls     - Usage: ls <path> ');
       console.log('open   - Usage: open <path> ');
       console.log('create - Usage: create <local-file-path> <dest-path> ');
+      console.log('rm - Usage: rm <path> ');
+      console.log('cd - Usage: cd <path> ');
+      console.log('pwd - Usage: pwd ');
       console.log('---------------------------------------------------');
       break;
     default:
-      if (line.startsWith('ls ')) {
-        var knox = new HDFSRequest('https://localhost:8443/gateway', 'sandbox', 'guest', 'guest-password');
-        // knox.get({path: "/tmp", op: "LISTSTATUS"}, callback);
+      var knox = new HDFSRequest('https://' + hostport + '/gateway', cluster, user, pwd);
+
+      if (line.startsWith('ls ') || line == "ls") {
         var array = line.split(" ");
-        var status = knox.listStatus({path: array[1]}, callback);
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        var path = "";
+        if (array.length == 1) {
+          path = this.wd;
+        }
+        else {
+          path = array[1];
+        }
+        var status = knox.listStatus({path: path}, callback);
       }
-      if (line.startsWith('open ')) {
-        var knox = new HDFSRequest('https://localhost:8443/gateway', 'sandbox', 'guest', 'guest-password');
-        // knox.get({path: "/tmp", op: "LISTSTATUS"}, callback);
+      else if (line.startsWith('open ')) {
         var array = line.split(" ");
-        var status = knox.open({path: array[1]}, callback);
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        var path = "";
+        if (array.length == 1) {
+          path = this.wd;
+        }
+        else {
+          path = array[1];
+        }
+        var status = knox.open({path: path}, callback);
       }
-      if (line.startsWith('create ')) {
-        var knox = new HDFSRequest('https://localhost:8443/gateway', 'sandbox', 'guest', 'guest-password');
-        // knox.get({path: "/tmp", op: "LISTSTATUS"}, callback);
+      else if (line.startsWith('create ')) {
         var array = line.split(" ");
         knox.create(array[1], {path: array[2]}, callback);
       }
-      if (line.startsWith('rm ')) {
-        var knox = new HDFSRequest('https://localhost:8443/gateway', 'sandbox', 'guest', 'guest-password');
-        // knox.get({path: "/tmp", op: "LISTSTATUS"}, callback);
+      else if (line.startsWith('rm ')) {
         var array = line.split(" ");
         knox.rm({path: array[1]}, callback);
+      }
+      else if (line.startsWith('cd ')) {
+        var array = line.split(" ");
+        if (typeof this.wd == 'undefined') this.wd = "/";
+        if (array[1].startsWith("/")) {
+           this.wd = array[1];
+         }
+         else {
+          this.wd += array[1];
+         }
+         if (this.wd != "/") {
+           this.wd += "/";
+         }
+         console.log("set working dir to: " + this.wd);
+      }
+      else if (line.startsWith('pwd')) {
+        console.log("current working dir is: " + this.wd);
       }
   }
   rl.prompt();
