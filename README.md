@@ -34,7 +34,7 @@ Author: Larry McCay
 
 This very simple CLI is handy for simple monitoring needs of files within HDFS through the Apache Knox Gateway.
 By leveraging the REST APIs exposed by Knox there is no need for a local Hadoop install for client libraries and configuration in order to access HDFS.
-
+```
 Available KnoxFs Commands and Usage ---------------
 ls     - Usage: ls <path>
 open   - Usage: open <path>
@@ -43,3 +43,4 @@ rm - Usage: rm <path>
 cd - Usage: cd <path>
 pwd - Usage: pwd
 ---------------------------------------------------
+```
