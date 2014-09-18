@@ -88,8 +88,9 @@ rl.on('line', function(line) {
         var status = knox.open({path: path}, callback);
       }
       else if (line.startsWith('create ')) {
-        var array = line.split(" ");
-        knox.create(array[1], {path: array[2]}, callback);
+        // var array = line.split(" ");
+        // knox.create(array[1], {path: array[2]}, callback);
+        console.log("Not available yet.")
       }
       else if (line.startsWith('rm ')) {
         var array = line.split(" ");
