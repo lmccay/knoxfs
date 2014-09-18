@@ -3,7 +3,15 @@ knoxfs
 
 Simple node.js CLI to interact with Hadoop behind an Apache Knox gateway
 
-```knoxfs>
+Simple clone this project and install it with npm to get all of the dependencies and run.
+
+   
+```
+cd knoxfs
+npm install
+node knoxfs.js
+
+knoxfs>
 KKKKKKKKK    KKKKKKK                                                     FFFFFFFFFFFFFFFFFFFFFF
 K:::::::K    K:::::K                                                     F::::::::::::::::::::F
 K:::::::K    K:::::K                                                     F::::::::::::::::::::F
