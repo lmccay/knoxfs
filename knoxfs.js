@@ -3,7 +3,7 @@ var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);
 var user = "guest";
 var pwd = "guest-password";
-var hostport = "localhost:8443";
+var hostport = "192.168.1.6:8443";
 var cluster = "sandbox";
 var wd = "/";
 
@@ -55,14 +55,17 @@ rl.on('line', function(line) {
     case 'help':
       console.log('');
       console.log('Available KnoxFs Commands and Usage ---------------');
-      console.log('ls     - Usage: ls <path> ');
-      console.log('open   - Usage: open <path> ');
-      console.log('create - Usage: create <local-file-path> <dest-path> ');
-      console.log('rm     - Usage: rm <path> ');
-      console.log('cd     - Usage: cd <path> ');
-      console.log('pwd    - Usage: pwd ');
-      console.log('login  - Usage: login <username> <password>');
-      console.log('whoami - Usage: whoami ');
+      console.log('ls       - Usage: ls <path> ');
+      console.log('open     - Usage: open <path> ');
+      console.log('create   - Usage: create <local-file-path> <dest-path> ');
+      console.log('rm       - Usage: rm <path> ');
+      console.log('cd       - Usage: cd <path> ');
+      console.log('pwd      - Usage: pwd ');
+      console.log('login    - Usage: login <username> <password>');
+      console.log('whoami   - Usage: whoami ');
+      console.log('cluster  - Usage: cluster ');
+      console.log('hostname - Usage: hostname ');
+      console.log('mnt      - Usage: mnt <hostname:port> <cluster> ');
       console.log('---------------------------------------------------');
       break;
     default:
@@ -90,7 +93,7 @@ rl.on('line', function(line) {
         else {
           path = array[1];
         }
-        var status = knox.open({path: path}, callback);
+        knox.open({path: path}, callback);
       }
       else if (line.startsWith('create ')) {
         // var array = line.split(" ");
@@ -108,6 +111,18 @@ rl.on('line', function(line) {
       }
       else if (line == 'whoami') {
         console.log(user);
+      }
+      else if (line == 'cluster') {
+        console.log(cluster);
+      }
+      else if (line == 'hostname') {
+        console.log(hostport);
+      }
+      else if (line.startsWith('mnt ')) {
+        var array = line.split(" ");
+        hostport = array[1];
+        cluster = array[2];
+		console.log("mounted cluster: " + cluster + " on host: " + hostport);
       }
       else if (line.startsWith('cd ')) {
         var array = line.split(" ");
