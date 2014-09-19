@@ -17,6 +17,10 @@ if (typeof String.prototype.startsWith != 'function') {
   };
 }
 
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
 function callback(error, response, body) {
   if (!error && response.statusCode == 200) {
     console.log(body);
@@ -117,13 +121,16 @@ rl.on('line', function(line) {
              this.wd = "/";
              for (var i = 0; i < dirs.length-2; i++) {
                this.wd += dirs[i];
+               if (!this.wd.endsWith("/")) {
+                 this.wd += "/";
+               }
              }
            }
          }
          else {
           this.wd += array[1];
          }
-         if (this.wd != "/") {
+         if (!this.wd.endsWith("/")) {
            this.wd += "/";
          }
          console.log("set working dir to: " + this.wd);
