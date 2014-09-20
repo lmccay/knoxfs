@@ -68,7 +68,7 @@ rl.on('line', function(line) {
       console.log('checksum - Usage: checksum <path> ');
       console.log('create   - Usage: create <local-file-path> <dest-path> ');
       console.log('chmod    - Usage: chmod <octal> <path> ');
-      console.log('chmod    - Usage: chown <owner[:group]> <path> ');
+      console.log('chown    - Usage: chown <owner[:group]> <path> ');
       console.log('rm       - Usage: rm <path> ');
       console.log('cd       - Usage: cd <path> ');
       console.log('pwd      - Usage: pwd ');
