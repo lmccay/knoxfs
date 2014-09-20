@@ -93,15 +93,22 @@ function printBanner() {
   console.log("");
 }
 
-printBanner();
-printHelp();
-rl.prompt();
+function splash() {
+  printBanner();
+  printHelp();
+  rl.prompt();
+}
+
+splash();
 
 rl.on('line', function(line) {
   switch(line.trim()) {
     case '?':
     case 'help':
       printHelp();
+      break;
+    case 'splash':
+      splash();
       break;
     default:
       var knox = new HDFSRequest('https://' + hostport + '/gateway', cluster, user, pwd);

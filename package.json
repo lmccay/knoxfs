@@ -1,5 +1,5 @@
 {
-  "author": "Larry McCay <lmccay@apache.org>",
+  "author": "Larry McCay <larry.mccay@gmail.com>",
   "name": "knoxfs",
   "version": "0.0.1",
   "description": "Simple node.js CLI to interact with Hadoop behind an Apache Knox gateway",
