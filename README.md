@@ -54,5 +54,10 @@ mnt      - Usage: mnt <hostname:port> <cluster>
 ---------------------------------------------------
 ```
 
-## Known Issues
+## Known Issues - pull requests welcomed! :)
 * create does not work yet
+* open of large files out of memory's the process
+* login just sets the state for username and password - doesn't do any actual authentication
+* should prompt for password and hide the characters as typed
+* cd .. only does not support multiple levels - you can only go up one at a time
+* cd does not validate the path that you type - may not be valid
