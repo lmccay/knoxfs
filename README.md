@@ -51,3 +51,6 @@ hostname - Usage: hostname
 mnt      - Usage: mnt <hostname:port> <cluster> 
 ---------------------------------------------------
 ```
+
+## Known Issues
+* create does not work yet
