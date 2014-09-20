@@ -57,6 +57,7 @@ rl.on('line', function(line) {
       console.log('Available KnoxFs Commands and Usage ---------------');
       console.log('ls       - Usage: ls <path> ');
       console.log('open     - Usage: open <path> ');
+      console.log('checksum - Usage: checksum <path> ');
       console.log('create   - Usage: create <local-file-path> <dest-path> ');
       console.log('rm       - Usage: rm <path> ');
       console.log('cd       - Usage: cd <path> ');

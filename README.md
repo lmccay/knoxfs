@@ -37,9 +37,9 @@ By leveraging the REST APIs exposed by Knox there is no need for a local Hadoop 
 Available KnoxFs Commands and Usage ---------------
 ls       - Usage: ls <path> 
 open     - Usage: open <path> 
+checksum - Usage: checksum <path> 
 create   - Usage: create <local-file-path> <dest-path> 
 rm       - Usage: rm <path> 
-mv       - Usage: mv <path> <destination-path>
 cd       - Usage: cd <path> 
 pwd      - Usage: pwd 
 login    - Usage: login <username> <password>
