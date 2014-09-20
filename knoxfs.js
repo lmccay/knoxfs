@@ -21,20 +21,48 @@ String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
+function printHelp() {
+  console.log('');
+  console.log('Available KnoxFs Commands and Usage ---------------');
+  console.log('ls       - Usage: ls <path> ');
+  console.log('lfs      - Usage: lfs <path> ');
+  console.log('open     - Usage: open <path> ');
+  console.log('checksum - Usage: checksum <path> ');
+  console.log('create   - Usage: create <local-file-path> <dest-path> ');
+  console.log('chmod    - Usage: chmod <octal> <path> ');
+  console.log('chown    - Usage: chown <owner[:group]> <path> ');
+  console.log('rm       - Usage: rm <path> ');
+  console.log('cd       - Usage: cd <path> ');
+  console.log('pwd      - Usage: pwd ');
+  console.log('login    - Usage: login <username> <password>');
+  console.log('logout   - Usage: logout');
+  console.log('whoami   - Usage: whoami ');
+  console.log('cluster  - Usage: cluster ');
+  console.log('hostname - Usage: hostname ');
+  console.log('mnt      - Usage: mnt <hostname:port> <cluster> ');
+  console.log('---------------------------------------------------');
+}
+
 function callback(error, response, body) {
   if (!error && response.statusCode == 200) {
     console.log(body);
   }
   else {
-	if (response.statusCode == 403) {
-	  console.log("permission denied");
-	}
-	else if (response.statusCode == 404) {
-	  console.log("file not found");
-	}
-	else {
+	  if (response.statusCode == 403) {
+	    console.log("permission denied");
+	  }
+	  else if (response.statusCode == 404) {
+	    console.log("file not found");
+	  }
+	  else if (response.statusCode == 400) {
+	    console.log("bad request");
+	  }
+	  else if (response.statusCode == 401) {
+	    console.log("authentication required - try login");
+	  }
+	  else {
       console.log(response.statusCode);
-	}
+  	}
   }
 }
 
@@ -56,29 +84,13 @@ console.log("K:::::::K    K:::::K  n::::n    n::::no:::::::::::::::ox:::::x  x::
 console.log("K:::::::K    K:::::K  n::::n    n::::n oo:::::::::::oox:::::x    x:::::x F::::::::FF         s:::::::::::ss  ");
 console.log("KKKKKKKKK    KKKKKKK  nnnnnn    nnnnnn   ooooooooooo xxxxxxx      xxxxxxxFFFFFFFFFFF          sssssssssss    ");
 console.log("");
+printHelp();
 
 rl.on('line', function(line) {
   switch(line.trim()) {
     case '?':
     case 'help':
-      console.log('');
-      console.log('Available KnoxFs Commands and Usage ---------------');
-      console.log('ls       - Usage: ls <path> ');
-      console.log('lfs      - Usage: lfs <path> ');
-      console.log('open     - Usage: open <path> ');
-      console.log('checksum - Usage: checksum <path> ');
-      console.log('create   - Usage: create <local-file-path> <dest-path> ');
-      console.log('chmod    - Usage: chmod <octal> <path> ');
-      console.log('chown    - Usage: chown <owner[:group]> <path> ');
-      console.log('rm       - Usage: rm <path> ');
-      console.log('cd       - Usage: cd <path> ');
-      console.log('pwd      - Usage: pwd ');
-      console.log('login    - Usage: login <username> <password>');
-      console.log('whoami   - Usage: whoami ');
-      console.log('cluster  - Usage: cluster ');
-      console.log('hostname - Usage: hostname ');
-      console.log('mnt      - Usage: mnt <hostname:port> <cluster> ');
-      console.log('---------------------------------------------------');
+      printHelp();
       break;
     default:
       var knox = new HDFSRequest('https://' + hostport + '/gateway', cluster, user, pwd);
@@ -165,7 +177,10 @@ rl.on('line', function(line) {
         user = array[1];
         pwd = array[2];
       }
-      else if (line == 'whoami') {
+      else if (line == 'logout') {
+        user = "";
+        pwd = "";
+      }      else if (line == 'whoami') {
         console.log(user);
       }
       else if (line == 'cluster') {
