@@ -202,7 +202,7 @@ rl.on('line', function(line) {
         var array = line.split(" ");
         hostport = array[1];
         cluster = array[2];
-		console.log("mounted cluster: " + cluster + " on host: " + hostport);
+        console.log("mounted cluster: " + cluster + " on host: " + hostport);
       }
       else if (line.startsWith('cd ')) {
         var array = line.split(" ");
@@ -228,6 +228,7 @@ rl.on('line', function(line) {
          if (!this.wd.endsWith("/")) {
            this.wd += "/";
          }
+         rl.setPrompt('knoxfs' + this.wd + '> ');
          console.log("set working dir to: " + this.wd);
       }
       else if (line.startsWith('pwd')) {
