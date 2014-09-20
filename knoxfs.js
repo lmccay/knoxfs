@@ -5,9 +5,9 @@ var user = "guest";
 var pwd = "guest-password";
 var hostport = "localhost:8443";
 var cluster = "sandbox";
-var wd = "/";
+var wd = "/tmp/";
 
-rl.setPrompt('knoxfs> ');
+rl.setPrompt('knoxfs' + wd + '> ');
 rl.prompt();
 
 if (typeof String.prototype.startsWith != 'function') {
@@ -108,10 +108,10 @@ rl.on('line', function(line) {
 
       if (line.startsWith('ls ') || line == "ls") {
         var array = line.split(" ");
-        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = wd + array[1];
         var path = "";
         if (array.length == 1) {
-          path = this.wd;
+          path = wd;
         }
         else {
           path = array[1];
@@ -120,10 +120,10 @@ rl.on('line', function(line) {
       }
       else if (line.startsWith('lfs ')) {
         var array = line.split(" ");
-        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = wd + array[1];
         var path = "";
         if (array.length == 1) {
-          path = this.wd;
+          path = wd;
         }
         else {
           path = array[1];
@@ -132,10 +132,10 @@ rl.on('line', function(line) {
       }
       else if (line.startsWith('checksum ')) {
         var array = line.split(" ");
-        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = wd + array[1];
         var path = "";
         if (array.length == 1) {
-          path = this.wd;
+          path = wd;
         }
         else {
           path = array[1];
@@ -144,10 +144,10 @@ rl.on('line', function(line) {
       }
       else if (line.startsWith('open ')) {
         var array = line.split(" ");
-        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = wd + array[1];
         var path = "";
         if (array.length == 1) {
-          path = this.wd;
+          path = wd;
         }
         else {
           path = array[1];
@@ -169,18 +169,18 @@ rl.on('line', function(line) {
       }
       else if (line.startsWith('mv ')) {
         var array = line.split(" ");
-        if (!array[1].startsWith("/")) array[1] = this.wd + array[1];
-        if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
+        if (!array[1].startsWith("/")) array[1] = wd + array[1];
+        if (!array[2].startsWith("/")) array[2] = wd + array[2];
         knox.mv({path: array[1], destination: array[2]}, callback);
       }
       else if (line.startsWith('chmod ')) {
         var array = line.split(" ");
-        if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
+        if (!array[2].startsWith("/")) array[2] = wd + array[2];
         knox.chmod({path: array[2], permission: array[1]}, callback);
       }
       else if (line.startsWith('chown ')) {
         var array = line.split(" ");
-        if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
+        if (!array[2].startsWith("/")) array[2] = wd + array[2];
         knox.chown({path: array[2], owner: array[1]}, callback);
       }
       else if (line.startsWith('login ')) {
@@ -208,33 +208,33 @@ rl.on('line', function(line) {
       }
       else if (line.startsWith('cd ')) {
         var array = line.split(" ");
-        if (typeof this.wd == 'undefined') this.wd = "/";
+        if (typeof wd == 'undefined') wd = "/";
         if (array[1].startsWith("/")) {
-           this.wd = array[1];
+           wd = array[1];
          }
          else if (".." == array[1]) {
-           var dirs = this.wd.split('/');
+           var dirs = wd.split('/');
            if (dirs.length > 1) {
-             this.wd = "/";
+             wd = "/";
              for (var i = 0; i < dirs.length-2; i++) {
-               this.wd += dirs[i];
-               if (!this.wd.endsWith("/")) {
-                 this.wd += "/";
+               wd += dirs[i];
+               if (!wd.endsWith("/")) {
+                 wd += "/";
                }
              }
            }
          }
          else {
-          this.wd += array[1];
+          wd += array[1];
          }
-         if (!this.wd.endsWith("/")) {
-           this.wd += "/";
+         if (!wd.endsWith("/")) {
+           wd += "/";
          }
-         rl.setPrompt('knoxfs' + this.wd + '> ');
-         console.log("set working dir to: " + this.wd);
+         rl.setPrompt('knoxfs' + wd + '> ');
+         console.log("set working dir to: " + wd);
       }
       else if (line.startsWith('pwd')) {
-        console.log("current working dir is: " + this.wd);
+        console.log("current working dir is: " + wd);
       }
       else {
 	    if (line.trim() != "") {
