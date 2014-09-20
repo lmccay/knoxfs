@@ -93,6 +93,22 @@ function chmod(options,callback) {
   console.log('url: ' + url);
   request.put(url, callback).auth(this.user, this.pwd, true);
 }
+function chown(options,callback) {
+  console.log(JSON.stringify(arguments));
+  var options = options || {};
+  options = mixin(options, {op: "SETOWNER"});
+  var version = options.version || "v1";
+  var operation = options.op || "";
+  var path = options.path || "/tmp";
+  var owner = options.owner || "guest";
+  var ownergroup = owner.split(":");
+  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + path + '?op=' + operation + "&owner=" + ownergroup[0];
+  if (ownergroup.length > 1) {
+	url += "&group=" + ownergroup[1];
+  }
+  console.log('url: ' + url);
+  request.put(url, callback).auth(this.user, this.pwd, true);
+}
 function rm(options,callback) {
   console.log(JSON.stringify(arguments));
   var options = options || {};
@@ -128,6 +144,7 @@ HDFSRequest.prototype.put=put;
 HDFSRequest.prototype.get=get;
 HDFSRequest.prototype.mv=mv;
 HDFSRequest.prototype.chmod=chmod;
+HDFSRequest.prototype.chown=chown;
 HDFSRequest.prototype.remove=remove;
 HDFSRequest.prototype.mkdirs=mkdirs;
 HDFSRequest.prototype.create=create;

@@ -26,7 +26,15 @@ function callback(error, response, body) {
     console.log(body);
   }
   else {
-    console.log(error);
+	if (response.statusCode == 403) {
+	  console.log("permission denied");
+	}
+	else if (response.statusCode == 404) {
+	  console.log("file not found");
+	}
+	else {
+      console.log(response.statusCode);
+	}
   }
 }
 
@@ -60,6 +68,7 @@ rl.on('line', function(line) {
       console.log('checksum - Usage: checksum <path> ');
       console.log('create   - Usage: create <local-file-path> <dest-path> ');
       console.log('chmod    - Usage: chmod <octal> <path> ');
+      console.log('chmod    - Usage: chown <owner[:group]> <path> ');
       console.log('rm       - Usage: rm <path> ');
       console.log('cd       - Usage: cd <path> ');
       console.log('pwd      - Usage: pwd ');
@@ -145,6 +154,11 @@ rl.on('line', function(line) {
         if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
         knox.chmod({path: array[2], permission: array[1]}, callback);
       }
+      else if (line.startsWith('chown ')) {
+        var array = line.split(" ");
+        if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
+        knox.chown({path: array[2], owner: array[1]}, callback);
+      }
       else if (line.startsWith('login ')) {
         var array = line.split(" ");
         user = array[1];
@@ -193,6 +207,11 @@ rl.on('line', function(line) {
       }
       else if (line.startsWith('pwd')) {
         console.log("current working dir is: " + this.wd);
+      }
+      else {
+	    if (line.trim() != "") {
+	      console.log("-knoxfs: " + line + ": command not found")
+	    }
       }
   }
   rl.prompt();
