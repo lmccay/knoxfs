@@ -3,6 +3,8 @@ knoxfs
 
 A very simple node.js CLI to interact with Hadoop through an Apache Knox gateway
 
+Node.js must be installed on your machine for KnoxFs to work. You can download the installer for your favorite platform from http://nodejs.org/download/.
+
 Simply clone this project and install it with npm to get all of the dependencies and run.
    
 ```
