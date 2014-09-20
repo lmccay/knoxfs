@@ -35,20 +35,21 @@ This very simple CLI is handy for simple monitoring needs of files within HDFS t
 By leveraging the REST APIs exposed by Knox there is no need for a local Hadoop install for client libraries and configuration in order to access HDFS.
 ```
 Available KnoxFs Commands and Usage ---------------
-ls       - Usage: ls <path> 
-open     - Usage: open <path> 
-checksum - Usage: checksum <path> 
-create   - Usage: create <local-file-path> <dest-path> 
-chmod    - Usage: chmod <octal> <path> 
-chown    - Usage: chown <owner[:group]> <path> 
-rm       - Usage: rm <path> 
-cd       - Usage: cd <path> 
-pwd      - Usage: pwd 
+ls       - Usage: ls <path>
+lfs      - Usage: lfs <path>
+open     - Usage: open <path>
+checksum - Usage: checksum <path>
+create   - Usage: create <local-file-path> <dest-path>
+chmod    - Usage: chmod <octal> <path>
+chown    - Usage: chown <owner[:group]> <path>
+rm       - Usage: rm <path>
+cd       - Usage: cd <path>
+pwd      - Usage: pwd
 login    - Usage: login <username> <password>
-whoami   - Usage: whoami 
-cluster  - Usage: cluster 
-hostname - Usage: hostname 
-mnt      - Usage: mnt <hostname:port> <cluster> 
+whoami   - Usage: whoami
+cluster  - Usage: cluster
+hostname - Usage: hostname
+mnt      - Usage: mnt <hostname:port> <cluster>
 ---------------------------------------------------
 ```
 

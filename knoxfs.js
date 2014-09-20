@@ -64,6 +64,7 @@ rl.on('line', function(line) {
       console.log('');
       console.log('Available KnoxFs Commands and Usage ---------------');
       console.log('ls       - Usage: ls <path> ');
+      console.log('lfs      - Usage: lfs <path> ');
       console.log('open     - Usage: open <path> ');
       console.log('checksum - Usage: checksum <path> ');
       console.log('create   - Usage: create <local-file-path> <dest-path> ');
@@ -94,7 +95,7 @@ rl.on('line', function(line) {
         }
         var status = knox.listStatus({path: path}, callback);
       }
-      else if (line.startsWith('lsf ')) {
+      else if (line.startsWith('lfs ')) {
         var array = line.split(" ");
         if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
         var path = "";
