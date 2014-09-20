@@ -81,6 +81,18 @@ function mv(options,callback) {
   console.log('url: ' + url);
   request.put(url, callback).auth(this.user, this.pwd, true);
 }
+function chmod(options,callback) {
+  console.log(JSON.stringify(arguments));
+  var options = options || {};
+  options = mixin(options, {op: "SETPERMISSION"});
+  var version = options.version || "v1";
+  var operation = options.op || "";
+  var path = options.path || "/tmp";
+  var permission = options.permission || "700";
+  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + '/' + path + '?op=' + operation + "&permission=" + permission;
+  console.log('url: ' + url);
+  request.put(url, callback).auth(this.user, this.pwd, true);
+}
 function rm(options,callback) {
   console.log(JSON.stringify(arguments));
   var options = options || {};
@@ -115,6 +127,7 @@ HDFSRequest.prototype.open=open;
 HDFSRequest.prototype.put=put;
 HDFSRequest.prototype.get=get;
 HDFSRequest.prototype.mv=mv;
+HDFSRequest.prototype.chmod=chmod;
 HDFSRequest.prototype.remove=remove;
 HDFSRequest.prototype.mkdirs=mkdirs;
 HDFSRequest.prototype.create=create;

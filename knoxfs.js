@@ -59,6 +59,7 @@ rl.on('line', function(line) {
       console.log('open     - Usage: open <path> ');
       console.log('checksum - Usage: checksum <path> ');
       console.log('create   - Usage: create <local-file-path> <dest-path> ');
+      console.log('chmod    - Usage: chmod <octal> <path> ');
       console.log('rm       - Usage: rm <path> ');
       console.log('cd       - Usage: cd <path> ');
       console.log('pwd      - Usage: pwd ');
@@ -138,6 +139,11 @@ rl.on('line', function(line) {
         if (!array[1].startsWith("/")) array[1] = this.wd + array[1];
         if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
         knox.mv({path: array[1], destination: array[2]}, callback);
+      }
+      else if (line.startsWith('chmod ')) {
+        var array = line.split(" ");
+        if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
+        knox.chmod({path: array[2], permission: array[1]}, callback);
       }
       else if (line.startsWith('login ')) {
         var array = line.split(" ");
