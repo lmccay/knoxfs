@@ -83,6 +83,30 @@ rl.on('line', function(line) {
         }
         var status = knox.listStatus({path: path}, callback);
       }
+      else if (line.startsWith('lsf ')) {
+        var array = line.split(" ");
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        var path = "";
+        if (array.length == 1) {
+          path = this.wd;
+        }
+        else {
+          path = array[1];
+        }
+        var status = knox.listFileStatus({path: path}, callback);
+      }
+      else if (line.startsWith('checksum ')) {
+        var array = line.split(" ");
+        if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
+        var path = "";
+        if (array.length == 1) {
+          path = this.wd;
+        }
+        else {
+          path = array[1];
+        }
+        knox.checksum({path: path}, callback);
+      }
       else if (line.startsWith('open ')) {
         var array = line.split(" ");
         if (array.length > 1 && !array[1].startsWith("/")) array[1] = this.wd + array[1];
@@ -103,6 +127,16 @@ rl.on('line', function(line) {
       else if (line.startsWith('rm ')) {
         var array = line.split(" ");
         knox.rm({path: array[1]}, callback);
+      }
+      else if (line.startsWith('mkdirs ')) {
+        var array = line.split(" ");
+        knox.mkdirs({path: array[1]}, callback);
+      }
+      else if (line.startsWith('mv ')) {
+        var array = line.split(" ");
+        if (!array[1].startsWith("/")) array[1] = this.wd + array[1];
+        if (!array[2].startsWith("/")) array[2] = this.wd + array[2];
+        knox.mv({path: array[1], destination: array[2]}, callback);
       }
       else if (line.startsWith('login ')) {
         var array = line.split(" ");

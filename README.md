@@ -39,6 +39,7 @@ ls       - Usage: ls <path>
 open     - Usage: open <path> 
 create   - Usage: create <local-file-path> <dest-path> 
 rm       - Usage: rm <path> 
+mv       - Usage: mv <path> <destination-path>
 cd       - Usage: cd <path> 
 pwd      - Usage: pwd 
 login    - Usage: login <username> <password>

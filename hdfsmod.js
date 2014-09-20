@@ -45,6 +45,18 @@ function listStatus(options,callback) {
   options = mixin(options, {op: "LISTSTATUS"});
   this.get(options, callback);
 }
+function listFileStatus(options,callback) {
+  // console.log(JSON.stringify(arguments));
+  var options = options || {};
+  options = mixin(options, {op: "GETFILESTATUS"});
+  this.get(options, callback);
+}
+function checksum(options,callback) {
+  // console.log(JSON.stringify(arguments));
+  var options = options || {};
+  options = mixin(options, {op: "GETFILECHECKSUM"});
+  this.get(options, callback);
+}
 function open(options,callback) {
   console.log(JSON.stringify(arguments));
   var options = options || {};
@@ -56,6 +68,18 @@ function mkdirs(options,callback) {
   var options = options || {};
   options = mixin(options, {op: "MKDIRS"});
   this.put(options, callback);
+}
+function mv(options,callback) {
+  console.log(JSON.stringify(arguments));
+  var options = options || {};
+  options = mixin(options, {op: "RENAME"});
+  var version = options.version || "v1";
+  var operation = options.op || "";
+  var path = options.path || "/tmp";
+  var destination = options.destination || "";
+  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + '/' + path + '?op=' + operation + "&destination=" + destination;
+  console.log('url: ' + url);
+  request.put(url, callback).auth(this.user, this.pwd, true);
 }
 function rm(options,callback) {
   console.log(JSON.stringify(arguments));
@@ -85,9 +109,12 @@ function mixin(target, source) {
   return target;
 }
 HDFSRequest.prototype.listStatus=listStatus;
+HDFSRequest.prototype.listFileStatus=listFileStatus;
+HDFSRequest.prototype.checksum=checksum;
 HDFSRequest.prototype.open=open;
 HDFSRequest.prototype.put=put;
 HDFSRequest.prototype.get=get;
+HDFSRequest.prototype.mv=mv;
 HDFSRequest.prototype.remove=remove;
 HDFSRequest.prototype.mkdirs=mkdirs;
 HDFSRequest.prototype.create=create;
