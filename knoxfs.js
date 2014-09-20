@@ -46,6 +46,7 @@ function printHelp() {
 function callback(error, response, body) {
   if (!error && response.statusCode == 200) {
     console.log(body);
+    rl.prompt();
   }
   else {
 	  if (response.statusCode == 403) {
@@ -94,6 +95,7 @@ function printBanner() {
 
 printBanner();
 printHelp();
+rl.prompt();
 
 rl.on('line', function(line) {
   switch(line.trim()) {
