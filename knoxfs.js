@@ -84,6 +84,8 @@ console.log("K:::::::K    K:::::K  n::::n    n::::no:::::::::::::::ox:::::x  x::
 console.log("K:::::::K    K:::::K  n::::n    n::::n oo:::::::::::oox:::::x    x:::::x F::::::::FF         s:::::::::::ss  ");
 console.log("KKKKKKKKK    KKKKKKK  nnnnnn    nnnnnn   ooooooooooo xxxxxxx      xxxxxxxFFFFFFFFFFF          sssssssssss    ");
 console.log("");
+console.log("Author: Larry McCay");
+console.log("");
 printHelp();
 
 rl.on('line', function(line) {

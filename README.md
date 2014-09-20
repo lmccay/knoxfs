@@ -46,6 +46,7 @@ rm       - Usage: rm <path>
 cd       - Usage: cd <path>
 pwd      - Usage: pwd
 login    - Usage: login <username> <password>
+logout   - Usage: logout
 whoami   - Usage: whoami
 cluster  - Usage: cluster
 hostname - Usage: hostname
