@@ -12,7 +12,7 @@ function get(options,callback) {
   // console.log(JSON.stringify(arguments));
 
   var options = options || {};
-  var operation = options.op || "";
+  var operation = options.op || ""; 
   var path = options.path || "/tmp";
   var version = options.version || "v1";
   url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + path + '?op=' + operation;
@@ -118,16 +118,42 @@ function rm(options,callback) {
 function create(localfile, options,callback) {
   console.log(JSON.stringify(arguments));
   var options = options || {};
-  options = mixin(options, {op: "CREATE", followAllRedirects: "true"});
-  var operation = options.op || "";
+  var operation = options.op || "CREATE";
   var path = options.path || "/tmp";
   var version = options.version || "v1";
-  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + path + '?op=' + operation;
+  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + '/' + path + '?op=' + operation;
+  options = mixin(options, {uri: url, op: "CREATE", followRedirect: "false"});
   console.log('url: ' + url);
+  // fs.createReadStream(localfile).pipe(request.put(url, callback).auth(this.user, this.pwd, true));
 
-  fs.createReadStream(localfile).pipe(request.put(url, callback).auth(this.user, this.pwd, true));
-  // fs.createReadStream('package.json').pipe(this.put(options, callback));
+  // send http request
+  request.put(options, function (error, response, body) {
+    // forward request error
+    if (error) return callback(error);
+    // check for expected redirect
+    if (response.statusCode == 307) {
+        // generate query string
+        options = mixin(options, {uri: response.headers.location, op: "CREATE", followRedirect: "false"});
+        // send http request
+        // fs.createReadStream(localfile).pipe(request.put(options, function (error, response, body) {
+        fs.createReadStream(localfile).pipe(request.put(response.headers.location, function (error, response, body) {
+            // forward request error
+            if (error) return callback(error);
+            // check for expected created response
+            if (response.statusCode == 201) {
+                // execute callback
+                return callback(null, response.headers.location);
+            } else {
+                return callback(new Error('expected http 201 created but received: ' + response.statusCode));   
+            } 
+        }).auth(this.user, this.pwd, true));
+    } else {
+        console.log(response.statusCode);
+        return callback(new Error('expected redirect'));   
+    }
+  }).auth(this.user, this.pwd, true);
 }
+
 function mixin(target, source) {
   source = source || {};
   Object.keys(source).forEach(function(key) {
@@ -136,6 +162,7 @@ function mixin(target, source) {
   
   return target;
 }
+
 HDFSRequest.prototype.listStatus=listStatus;
 HDFSRequest.prototype.listFileStatus=listFileStatus;
 HDFSRequest.prototype.checksum=checksum;

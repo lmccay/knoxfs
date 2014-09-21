@@ -49,20 +49,22 @@ function callback(error, response, body) {
     rl.prompt();
   }
   else {
-	  if (response.statusCode == 403) {
+	  if (response && response.statusCode == 403) {
 	    console.log("permission denied");
 	  }
-	  else if (response.statusCode == 404) {
+	  else if (response && response.statusCode == 404) {
 	    console.log("file not found");
 	  }
-	  else if (response.statusCode == 400) {
+	  else if (response && response.statusCode == 400) {
 	    console.log("bad request");
 	  }
-	  else if (response.statusCode == 401) {
+	  else if (response && response.statusCode == 401) {
 	    console.log("authentication required - try login");
 	  }
 	  else {
-      console.log(response.statusCode);
+	    if (response) {
+        console.log(response.statusCode);
+      }
   	}
   	if (error) {
   	  console.log(error);
@@ -168,10 +170,12 @@ rl.on('line', function(line) {
       }
       else if (line.startsWith('rm ')) {
         var array = line.split(" ");
+        if (!array[1].startsWith("/")) array[1] = wd + array[1];
         knox.rm({path: array[1]}, callback);
       }
       else if (line.startsWith('mkdirs ')) {
         var array = line.split(" ");
+        if (!array[1].startsWith("/")) array[1] = wd + array[1];
         knox.mkdirs({path: array[1]}, callback);
       }
       else if (line.startsWith('mv ')) {
