@@ -44,9 +44,10 @@ function printHelp() {
 }
 
 function callback(error, response, body) {
-  if (!error && response.statusCode == 200) {
-    if (body) {
-      console.log(body);
+  if (response.statusCode == 200 || response.statusCode == 201) {
+    console.log(body);
+    if(response.statusCode == 201) {
+      console.log("successfully created")
     }
     rl.prompt();
   }
@@ -251,9 +252,9 @@ rl.on('line', function(line) {
         console.log("current working dir is: " + wd);
       }
       else {
-	    if (line.trim() != "") {
-	      console.log("-knoxfs: " + line + ": command not found")
-	    }
+	      if (line.trim() != "") {
+	        console.log("-knoxfs: " + line + ": command not found")
+	      }
       }
   }
   rl.prompt();

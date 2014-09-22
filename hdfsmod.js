@@ -141,7 +141,7 @@ HDFSRequest.prototype.create = function create(localfile, options,callback) {
             // check for expected created response
             if (response.statusCode == 201) {
                 // execute callback
-                return callback(null, response.headers.location);
+                return callback(null, response, response.headers.location);
             } else {
                 return callback(new Error('expected http 201 created but received: ' + response.statusCode));   
             } 
