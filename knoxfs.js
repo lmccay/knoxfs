@@ -26,7 +26,7 @@ function printHelp() {
   console.log('Available KnoxFs Commands and Usage ---------------');
   console.log('ls       - Usage: ls <path> ');
   console.log('lfs      - Usage: lfs <path> ');
-  console.log('open     - Usage: open <path> ');
+  console.log('cat      - Usage: cat <path> ');
   console.log('append   - Usage: append <local-file-path> [<dest-file>]');
   console.log('put      - Usage: put <local-file-path> [<dest-path>] ');
   console.log('chmod    - Usage: chmod <octal> <path> ');
@@ -155,7 +155,7 @@ rl.on('line', function(line) {
         }
         knox.checksum({path: path}, callback);
       }
-      else if (line.startsWith('open ')) {
+      else if (line.startsWith('cat ')) {
         var array = line.split(" ");
         if (array.length > 1 && !array[1].startsWith("/")) array[1] = wd + array[1];
         var path = "";

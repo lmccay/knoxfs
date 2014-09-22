@@ -39,7 +39,7 @@ By leveraging the REST APIs exposed by Knox there is no need for a local Hadoop 
 Available KnoxFs Commands and Usage ---------------
 ls       - Usage: ls <path>
 lfs      - Usage: lfs <path>
-open     - Usage: open <path>
+cat      - Usage: cat <path>
 append   - Usage: append <local-file-path> [<dest-file>]
 put      - Usage: put <local-file-path> [<dest-path>]
 chmod    - Usage: chmod <octal> <path>
