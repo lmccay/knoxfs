@@ -73,7 +73,7 @@ through the available commands.
 
 ## Known Issues - pull requests welcomed! :)
 * put does not work with Knox 0.4.0 or earlier releases - currently requires a build from master or branch v0.5.0
-* open of large files out of memory's the process
+* cat of large files out of memory's the process
 * login just sets the state for username and password - doesn't do any actual authentication
 * should prompt for password and hide the characters as typed
 * cd .. does not support multiple levels - you can only go up one at a time
