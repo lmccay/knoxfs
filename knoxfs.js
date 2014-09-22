@@ -27,13 +27,14 @@ function printHelp() {
   console.log('ls       - Usage: ls <path> ');
   console.log('lfs      - Usage: lfs <path> ');
   console.log('open     - Usage: open <path> ');
-  console.log('checksum - Usage: checksum <path> ');
-  console.log('create   - Usage: create <local-file-path> <dest-path> ');
+  console.log('append   - Usage: append <local-file-path> [<dest-file>]');
+  console.log('put      - Usage: put <local-file-path> [<dest-path>] ');
   console.log('chmod    - Usage: chmod <octal> <path> ');
   console.log('chown    - Usage: chown <owner[:group]> <path> ');
   console.log('rm       - Usage: rm <path> ');
   console.log('cd       - Usage: cd <path> ');
   console.log('pwd      - Usage: pwd ');
+  console.log('mkdir    - Usage: mkdir <path>');
   console.log('login    - Usage: login <username> <password>');
   console.log('logout   - Usage: logout');
   console.log('whoami   - Usage: whoami ');
@@ -166,10 +167,28 @@ rl.on('line', function(line) {
         }
         knox.open({path: path}, callback);
       }
-      else if (line.startsWith('create ')) {
+      else if (line.startsWith('put ')) {
         var array = line.split(" ");
-        if (!array[2].startsWith("/")) array[2] = wd + array[2];
-        knox.create(array[1], {path: array[2]}, callback);
+        var path;
+        if (array.length == 3) {
+          if (!array[2].startsWith("/")) path = wd + array[2];
+        }
+        else {
+          path = wd + array[1].replace(/^.*[\\\/]/, '');
+        }
+        knox.create(array[1], {path: path}, callback);
+        // console.log("Not available yet.")
+      }
+      else if (line.startsWith('append ')) {
+        var array = line.split(" ");
+        var path;
+        if (array.length == 3) {
+          if (!array[2].startsWith("/")) path = wd + array[2];
+        }
+        else {
+          path = wd + array[1].replace(/^.*[\\\/]/, '');
+        }
+        knox.append(array[1], {path: path}, callback);
         // console.log("Not available yet.")
       }
       else if (line.startsWith('rm ')) {
@@ -177,7 +196,7 @@ rl.on('line', function(line) {
         if (!array[1].startsWith("/")) array[1] = wd + array[1];
         knox.rm({path: array[1]}, callback);
       }
-      else if (line.startsWith('mkdirs ')) {
+      else if (line.startsWith('mkdir ')) {
         var array = line.split(" ");
         if (!array[1].startsWith("/")) array[1] = wd + array[1];
         knox.mkdirs({path: array[1]}, callback);

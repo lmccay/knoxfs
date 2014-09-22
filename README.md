@@ -40,13 +40,14 @@ Available KnoxFs Commands and Usage ---------------
 ls       - Usage: ls <path>
 lfs      - Usage: lfs <path>
 open     - Usage: open <path>
-checksum - Usage: checksum <path>
-create   - Usage: create <local-file-path> <dest-path>
+append   - Usage: append <local-file-path> [<dest-file>]
+put      - Usage: put <local-file-path> [<dest-path>]
 chmod    - Usage: chmod <octal> <path>
 chown    - Usage: chown <owner[:group]> <path>
 rm       - Usage: rm <path>
 cd       - Usage: cd <path>
 pwd      - Usage: pwd
+mkdir    - Usage: mkdir <path>
 login    - Usage: login <username> <password>
 logout   - Usage: logout
 whoami   - Usage: whoami
@@ -57,7 +58,7 @@ mnt      - Usage: mnt <hostname:port> <cluster>
 ```
 
 ## Known Issues - pull requests welcomed! :)
-* create does not work with Knox 0.4.0 or earlier releases - requires a build from source and will work in 0.5.0
+* put does not work with Knox 0.4.0 or earlier releases - currently requires a build from master or branch v0.5.0
 * open of large files out of memory's the process
 * login just sets the state for username and password - doesn't do any actual authentication
 * should prompt for password and hide the characters as typed

@@ -30,6 +30,17 @@ function put(options,callback) {
   console.log('url: ' + url);
   request.put(url, callback).auth(this.user, this.pwd, true);
 }
+function post(options,callback) {
+  console.log(JSON.stringify(arguments));
+
+  var options = options || {};
+  var operation = options.op || "";
+  var path = options.path || "/tmp";
+  var version = options.version || "v1";
+  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + path + '?op=' + operation;
+  console.log('url: ' + url);
+  request.post(url, callback).auth(this.user, this.pwd, true);
+}
 function remove(options,callback) {
   var options = options || {};
   var operation = options.op || "";
@@ -152,7 +163,43 @@ HDFSRequest.prototype.create = function create(localfile, options,callback) {
     }
   }.bind(this)).auth(this.user, this.pwd, true);
 }
+HDFSRequest.prototype.append = function append(localfile, options,callback) {
+  console.log(JSON.stringify(arguments));
+  var options = options || {};
+  var operation = options.op || "APPEND";
+  var path = options.path || "/tmp";
+  var version = options.version || "v1";
+  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + '/' + path + '?op=' + operation;
+  options = mixin(options, {uri: url, op: "APPEND", followRedirect: "false", jar: "true"});
+  console.log('url: ' + url);
+  // fs.createReadStream(localfile).pipe(request.put(url, callback).auth(this.user, this.pwd, true));
 
+  // send http request
+  request.post(options, function (error, response, body) {
+    // forward request error
+    if (error) return callback(error);
+    // check for expected redirect
+    if (response.statusCode == 307) {
+        // generate query string
+        options = mixin(options, {jar: "true", uri: response.headers.location, op: "APPEND", followRedirect: "false"});
+        // send http request
+        fs.createReadStream(localfile).pipe(request.post(response.headers.location, function (error, response, body) {
+            // forward request error
+            if (error) return callback(error);
+            // check for expected created response
+            if (response.statusCode == 200) {
+                // execute callback
+                return callback(null, response, response.body);
+            } else {
+                return callback(new Error('expected http 200 created but received: ' + response.statusCode));   
+            } 
+       }).auth(this.user, this.pwd));
+    } else {
+        console.log(response.statusCode);
+        return callback(new Error('expected redirect'));   
+    }
+  }.bind(this)).auth(this.user, this.pwd, true);
+}
 function mixin(target, source) {
   source = source || {};
   Object.keys(source).forEach(function(key) {
