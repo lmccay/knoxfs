@@ -115,14 +115,14 @@ function rm(options,callback) {
   options = mixin(options, {op: "DELETE"});
   this.remove(options, callback);
 }
-function create(localfile, options,callback) {
+HDFSRequest.prototype.create = function create(localfile, options,callback) {
   console.log(JSON.stringify(arguments));
   var options = options || {};
   var operation = options.op || "CREATE";
   var path = options.path || "/tmp";
   var version = options.version || "v1";
   url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + '/' + path + '?op=' + operation;
-  options = mixin(options, {uri: url, op: "CREATE", followRedirect: "false"});
+  options = mixin(options, {uri: url, op: "CREATE", followRedirect: "false", jar: "true"});
   console.log('url: ' + url);
   // fs.createReadStream(localfile).pipe(request.put(url, callback).auth(this.user, this.pwd, true));
 
@@ -133,9 +133,8 @@ function create(localfile, options,callback) {
     // check for expected redirect
     if (response.statusCode == 307) {
         // generate query string
-        options = mixin(options, {uri: response.headers.location, op: "CREATE", followRedirect: "false"});
+        options = mixin(options, {jar: "true", uri: response.headers.location, op: "CREATE", followRedirect: "false"});
         // send http request
-        // fs.createReadStream(localfile).pipe(request.put(options, function (error, response, body) {
         fs.createReadStream(localfile).pipe(request.put(response.headers.location, function (error, response, body) {
             // forward request error
             if (error) return callback(error);
@@ -146,12 +145,12 @@ function create(localfile, options,callback) {
             } else {
                 return callback(new Error('expected http 201 created but received: ' + response.statusCode));   
             } 
-        }).auth(this.user, this.pwd, true));
+       }).auth(this.user, this.pwd));
     } else {
         console.log(response.statusCode);
         return callback(new Error('expected redirect'));   
     }
-  }).auth(this.user, this.pwd, true);
+  }.bind(this)).auth(this.user, this.pwd, true);
 }
 
 function mixin(target, source) {
@@ -174,6 +173,6 @@ HDFSRequest.prototype.chmod=chmod;
 HDFSRequest.prototype.chown=chown;
 HDFSRequest.prototype.remove=remove;
 HDFSRequest.prototype.mkdirs=mkdirs;
-HDFSRequest.prototype.create=create;
+// HDFSRequest.prototype.create=create;
 HDFSRequest.prototype.rm=rm;
 module.exports=HDFSRequest;

@@ -45,7 +45,9 @@ function printHelp() {
 
 function callback(error, response, body) {
   if (!error && response.statusCode == 200) {
-    console.log(body);
+    if (body) {
+      console.log(body);
+    }
     rl.prompt();
   }
   else {
@@ -164,9 +166,10 @@ rl.on('line', function(line) {
         knox.open({path: path}, callback);
       }
       else if (line.startsWith('create ')) {
-        // var array = line.split(" ");
-        // knox.create(array[1], {path: array[2]}, callback);
-        console.log("Not available yet.")
+        var array = line.split(" ");
+        if (!array[2].startsWith("/")) array[2] = wd + array[2];
+        knox.create(array[1], {path: array[2]}, callback);
+        // console.log("Not available yet.")
       }
       else if (line.startsWith('rm ')) {
         var array = line.split(" ");
