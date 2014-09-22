@@ -57,6 +57,20 @@ mnt      - Usage: mnt <hostname:port> <cluster>
 ---------------------------------------------------
 ```
 
+## Usage
+The default settings for KnoxFs assume a localhost installation of an Apache Knox instance and a topology called sandbox.
+It also defaults to the demo username and password for the Apache Knox demo LDAP server: guest:guest-password.
+
+In order to login as another user and interact with another topology deployment the following can be used:
+
+```
+knoxfs/> login username password
+knoxfs/> mnt knoxhost:8443 topologyname
+```
+
+Once you are logged in as your appropriate user and you have mounted the correct Knox topology, you may interact with HDFS
+through the available commands.
+
 ## Known Issues - pull requests welcomed! :)
 * put does not work with Knox 0.4.0 or earlier releases - currently requires a build from master or branch v0.5.0
 * open of large files out of memory's the process
