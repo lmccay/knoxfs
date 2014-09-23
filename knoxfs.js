@@ -65,6 +65,9 @@ function callback(error, response, body) {
 	  else if (response && response.statusCode == 401) {
 	    console.log("authentication required - try login");
 	  }
+	  else if (response && response.statusCode == 500) {
+	    console.log("System Error: Please ensure that the correct Knox instance is mounted and that the topology url's are correct.");
+	  }
 	  else {
 	    if (response) {
         console.log(response.statusCode);
@@ -171,7 +174,12 @@ rl.on('line', function(line) {
         var array = line.split(" ");
         var path;
         if (array.length == 3) {
-          if (!array[2].startsWith("/")) path = wd + array[2];
+          if (!array[2].startsWith("/")) {
+            path = wd + array[2];
+          }
+          else {
+            path = array[2];
+          }
         }
         else {
           path = wd + array[1].replace(/^.*[\\\/]/, '');
@@ -183,7 +191,12 @@ rl.on('line', function(line) {
         var array = line.split(" ");
         var path;
         if (array.length == 3) {
-          if (!array[2].startsWith("/")) path = wd + array[2];
+          if (!array[2].startsWith("/")) {
+            path = wd + array[2];
+          }
+          else {
+            path = array[2];
+          }
         }
         else {
           path = wd + array[1].replace(/^.*[\\\/]/, '');
