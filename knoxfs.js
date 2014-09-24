@@ -53,7 +53,15 @@ function callback(error, response, body) {
 	else {
 	  if (response.statusCode == 200 || response.statusCode == 201) {
 	    if (body[0] === '{' || body[0] === '[') {
-        process.stdout.write(JSON.stringify(JSON.parse(body), null, 2));
+        if (body.startsWith('{"FileStatuses')) {
+	        displayListings(body);
+        }
+        else if (body.startsWith('{"FileStatus"')) {
+	        displayListing(body);
+        }
+        else {
+          process.stdout.write(JSON.stringify(JSON.parse(body), null, 2));
+        }
       }
       else {
         console.log(body);
@@ -86,6 +94,38 @@ function callback(error, response, body) {
       }
   	}
   }
+}
+
+function displayListings(body) {
+  var obj = JSON.parse(body);
+  console.log();
+  var listing;
+  for(var i=0; i < obj.FileStatuses.FileStatus.length; i++){
+    listing = obj.FileStatuses.FileStatus[i].type + " " + 
+    obj.FileStatuses.FileStatus[i].permission + " " + 
+    obj.FileStatuses.FileStatus[i].owner + " " + 
+    obj.FileStatuses.FileStatus[i].group + " " + 
+    obj.FileStatuses.FileStatus[i].blockSize + " " + 
+    obj.FileStatuses.FileStatus[i].modificationTime + " " + 
+    obj.FileStatuses.FileStatus[i].replication + " " + 
+    obj.FileStatuses.FileStatus[i].pathSuffix;
+    console.log(listing);
+  }
+  console.log("");
+  console.log(obj.FileStatuses.FileStatus.length + " listed.");
+}
+
+function displayListing(filestatus) {
+  var obj = JSON.parse(filestatus);
+  console.log();
+  console.log(obj.FileStatus.type + " " + 
+  obj.FileStatus.permission + " " + 
+  obj.FileStatus.owner + " " + 
+  obj.FileStatus.group + " " + 
+  obj.FileStatus.blockSize + " " + 
+  obj.FileStatus.modificationTime + " " + 
+  obj.FileStatus.replication + " " +
+  obj.FileStatus.pathSuffix);
 }
 
 function printBanner() {
