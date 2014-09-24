@@ -52,7 +52,12 @@ function callback(error, response, body) {
 	}
 	else {
 	  if (response.statusCode == 200 || response.statusCode == 201) {
-      console.log(body);
+	    if (body[0] === '{' || body[0] === '[') {
+        process.stdout.write(JSON.stringify(JSON.parse(body), null, 2));
+      }
+      else {
+        console.log(body);
+      }
       if(response.statusCode == 201) {
         console.log("successfully created")
       }
