@@ -46,36 +46,39 @@ function printHelp() {
 }
 
 function callback(error, response, body) {
-  if (response.statusCode == 200 || response.statusCode == 201) {
-    console.log(body);
-    if(response.statusCode == 201) {
-      console.log("successfully created")
-    }
-    rl.prompt();
-  }
-  else {
-	  if (response && response.statusCode == 403) {
-	    console.log("permission denied");
-	  }
-	  else if (response && response.statusCode == 404) {
-	    console.log("file not found");
-	  }
-	  else if (response && response.statusCode == 400) {
-	    console.log("bad request");
-	  }
-	  else if (response && response.statusCode == 401) {
-	    console.log("authentication required - try login");
-	  }
-	  else if (response && response.statusCode == 500) {
-	    console.log("System Error: Please ensure that the correct Knox instance is mounted and that the topology url's are correct.");
-	  }
-	  else {
-	    if (response) {
-        console.log(response.statusCode);
+	if (error) {
+	  console.log(error);
+	  console.log("TIP: Check that Knox is running and configured correctly for a running cluster.")
+	}
+	else {
+	  if (response.statusCode == 200 || response.statusCode == 201) {
+      console.log(body);
+      if(response.statusCode == 201) {
+        console.log("successfully created")
       }
-  	}
-  	if (error) {
-  	  console.log(error);
+      rl.prompt();
+    }
+    else {
+	    if (response && response.statusCode == 403) {
+	      console.log("permission denied");
+	    }
+	    else if (response && response.statusCode == 404) {
+	      console.log("file not found");
+	    }
+	    else if (response && response.statusCode == 400) {
+	      console.log("bad request");
+	    }
+	    else if (response && response.statusCode == 401) {
+	      console.log("authentication required - try login");
+	    }
+	    else if (response && response.statusCode == 500) {
+	      console.log("System Error: Please ensure that the correct Knox instance is mounted and that the topology url's are correct.");
+	    }
+	    else {
+	      if (typeof response != 'undefined') {
+          console.log(response.statusCode);
+        }
+      }
   	}
   }
 }
@@ -116,7 +119,7 @@ function validateDirectory(next) {
   // console.log("validating: " + next);
   knox.listFileStatus({path: next}, function callback(error, response, body) {
     // console.log(response.statusCode);
-    if (response.statusCode == 200) {
+    if (typeof response != 'undefined' && response.statusCode == 200) {
       prev = "" + wd;
       wd = next;
       console.log("");
