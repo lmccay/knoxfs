@@ -6,6 +6,7 @@ var pwd = "guest-password";
 var hostport = "localhost:8443";
 var cluster = "sandbox";
 var wd = "/tmp/";
+var prev = "";
 
 rl.setPrompt('knoxfs' + wd + '> ');
 rl.prompt();
@@ -109,6 +110,52 @@ function splash() {
 }
 
 splash();
+
+function validateDirectory(next) {
+  var knox = new HDFSRequest('https://' + hostport + '/gateway', cluster, user, pwd);
+  // console.log("validating: " + next);
+  knox.listFileStatus({path: next}, function callback(error, response, body) {
+    // console.log(response.statusCode);
+    if (response.statusCode == 200) {
+      prev = "" + wd;
+      wd = next;
+      console.log("");
+      // console.log("prev: " + prev);
+      // console.log("wd: " + wd);
+    }
+    else {
+      console.log(next + ': No such file or directory.')
+    }
+  });
+}
+
+function changeDirectory(line) {
+  var next = wd.value;
+  var array = line.split(" ");
+  if (typeof wd == 'undefined') wd = "/";
+  if (array[1].startsWith("/")) {
+     next = "" + array[1];
+  }
+  else if (".." == array[1]) {
+    var dirs = wd.split('/');
+    if (dirs.length > 1) {
+      next = "/";
+      for (var i = 0; i < dirs.length-2; i++) {
+        next = next + dirs[i];
+        if (!next.endsWith("/")) {
+          next += "/";
+        }
+      }
+    }
+  }
+  else {
+    next = wd + array[1];
+  }
+  if (!next.endsWith("/")) {
+    next = next + "/";
+  }
+  validateDirectory(next);
+}
 
 rl.on('line', function(line) {
   switch(line.trim()) {
@@ -254,31 +301,7 @@ rl.on('line', function(line) {
         console.log("mounted cluster: " + cluster + " on host: " + hostport);
       }
       else if (line.startsWith('cd ')) {
-        var array = line.split(" ");
-        if (typeof wd == 'undefined') wd = "/";
-        if (array[1].startsWith("/")) {
-           wd = array[1];
-         }
-         else if (".." == array[1]) {
-           var dirs = wd.split('/');
-           if (dirs.length > 1) {
-             wd = "/";
-             for (var i = 0; i < dirs.length-2; i++) {
-               wd += dirs[i];
-               if (!wd.endsWith("/")) {
-                 wd += "/";
-               }
-             }
-           }
-         }
-         else {
-          wd += array[1];
-         }
-         if (!wd.endsWith("/")) {
-           wd += "/";
-         }
-         rl.setPrompt('knoxfs' + wd + '> ');
-         console.log("set working dir to: " + wd);
+        changeDirectory(line);
       }
       else if (line.startsWith('pwd')) {
         console.log("current working dir is: " + wd);
@@ -289,6 +312,7 @@ rl.on('line', function(line) {
 	      }
       }
   }
+  rl.setPrompt('knoxfs' + wd + '> ');
   rl.prompt();
 }).on('close', function() {
   console.log('Have a great day!');

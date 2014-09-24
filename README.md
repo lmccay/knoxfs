@@ -77,4 +77,3 @@ through the available commands.
 * login just sets the state for username and password - doesn't do any actual authentication
 * should prompt for password and hide the characters as typed
 * cd .. does not support multiple levels - you can only go up one at a time
-* cd does not validate the path that you type - may not be valid
