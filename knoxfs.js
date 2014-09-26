@@ -46,53 +46,53 @@ function printHelp() {
 }
 
 function callback(error, response, body) {
-	if (error) {
-	  console.log(error);
-	  console.log("TIP: Check that Knox is running and configured correctly for a running cluster.")
-	}
-	else {
-	  if (response.statusCode == 200 || response.statusCode == 201) {
-	    if (body[0] === '{' || body[0] === '[') {
-        if (body.startsWith('{"FileStatuses')) {
-	        displayListings(body);
-        }
-        else if (body.startsWith('{"FileStatus"')) {
-	        displayListing(body);
-        }
-        else {
-          process.stdout.write(JSON.stringify(JSON.parse(body), null, 2));
-        }
-      }
-      else {
-        console.log(body);
-      }
-      if(response.statusCode == 201) {
-        console.log("successfully created")
-      }
-      rl.prompt();
-    }
-    else {
-	    if (response && response.statusCode == 403) {
-	      console.log("permission denied");
-	    }
-	    else if (response && response.statusCode == 404) {
-	      console.log("file not found");
-	    }
-	    else if (response && response.statusCode == 400) {
-	      console.log("bad request");
-	    }
-	    else if (response && response.statusCode == 401) {
-	      console.log("authentication required - try login");
-	    }
-	    else if (response && response.statusCode == 500) {
-	      console.log("System Error: Please ensure that the correct Knox instance is mounted and that the topology url's are correct.");
-	    }
-	    else {
-	      if (typeof response != 'undefined') {
-          console.log(response.statusCode);
-        }
-      }
-  	}
+ if (typeof response != 'undefined' && response.statusCode == 200 || typeof response != 'undefined' && response.statusCode == 201) {
+   if (body[0] === '{' || body[0] === '[') {
+     if (body.startsWith('{"FileStatuses')) {
+       displayListings(body);
+     }
+     else if (body.startsWith('{"FileStatus"')) {
+       displayListing(body);
+     }
+     else {
+       process.stdout.write(JSON.stringify(JSON.parse(body), null, 2));
+     }
+   }
+   else {
+     console.log(body);
+   }
+   if(response.statusCode == 201) {
+     console.log("successfully created")
+   }
+   rl.prompt();
+ }
+ else {
+   if (response && response.statusCode == 403) {
+     console.log("permission denied");
+   }
+   else if (response && response.statusCode == 404) {
+     console.log("file not found");
+   }
+   else if (response && response.statusCode == 400) {
+     console.log("bad request");
+   }
+   else if (response && response.statusCode == 401) {
+     console.log("authentication required - try login");
+   }
+   else if (response && response.statusCode == 403) {
+     console.log("Forbidden - check the health of your cluster.");
+   }
+   else if (response && response.statusCode == 500) {
+     console.log("System Error: Please ensure that the correct Knox instance is mounted and that the topology url's are correct.");
+   }
+   else {
+     if (typeof response != 'undefined') {
+       console.log(response.statusCode);
+     }
+   }
+ 	 if (error) {
+ 	   console.log(error);
+ 	 }
   }
 }
 
@@ -105,7 +105,7 @@ function displayListings(body) {
     obj.FileStatuses.FileStatus[i].permission + " " + 
     obj.FileStatuses.FileStatus[i].owner + " " + 
     obj.FileStatuses.FileStatus[i].group + " " + 
-    obj.FileStatuses.FileStatus[i].blockSize + " " + 
+    obj.FileStatuses.FileStatus[i].length + " " + 
     obj.FileStatuses.FileStatus[i].modificationTime + " " + 
     obj.FileStatuses.FileStatus[i].replication + " " + 
     obj.FileStatuses.FileStatus[i].pathSuffix;
@@ -122,7 +122,7 @@ function displayListing(filestatus) {
   obj.FileStatus.permission + " " + 
   obj.FileStatus.owner + " " + 
   obj.FileStatus.group + " " + 
-  obj.FileStatus.blockSize + " " + 
+  obj.FileStatus.length + " " + 
   obj.FileStatus.modificationTime + " " + 
   obj.FileStatus.replication + " " +
   obj.FileStatus.pathSuffix);
