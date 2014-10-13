@@ -140,9 +140,10 @@ function displayListing(filestatus) {
 function toSymbolic ( octal, output ) {
 	var digits, binary, block=[]
 		, output = output || 'array';
-		
+	
+	if (octal > 777) octal = new String(octal).substring(1, 4);	
 	if ( !isOctalValid( octal ) ) {
-		throw new Error( "Permission octal representation is not valid" );
+		throw new Error( "Permission octal representation is not valid: " + octal );
 	}
 		
 	
