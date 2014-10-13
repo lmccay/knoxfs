@@ -102,10 +102,11 @@ function displayListings(body) {
   console.log();
   var listing = "_";
   for(var i=0; i < obj.FileStatuses.FileStatus.length; i++){
+    listing = "_";
     if (obj.FileStatuses.FileStatus[i].type == "DIRECTORY" ) {
       listing = "d";
     }
-    listing = toSymbolic(parseInt(obj.FileStatuses.FileStatus[i].permission)) + " " +
+    listing += toSymbolic(parseInt(obj.FileStatuses.FileStatus[i].permission)) + " " +
     obj.FileStatuses.FileStatus[i].permission + " " +
     obj.FileStatuses.FileStatus[i].owner + " " + 
     obj.FileStatuses.FileStatus[i].group + " " + 
@@ -122,7 +123,11 @@ function displayListings(body) {
 function displayListing(filestatus) {
   var obj = JSON.parse(filestatus);
   console.log();
-  console.log(obj.FileStatus.type + " " + 
+  listing = "_";
+  if (obj.FileStatus.type == "DIRECTORY" ) {
+    listing = "d";
+  }
+  console.log(listing + 
   toSymbolic(parseInt(obj.FileStatus.permission)) + " " + 
   obj.FileStatus.owner + " " + 
   obj.FileStatus.group + " " + 
