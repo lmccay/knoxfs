@@ -1,6 +1,7 @@
 var HDFSRequest = require('./hdfsmod');
 var readline = require('readline'),
     rl = readline.createInterface(process.stdin, process.stdout);
+    
 var user = "guest";
 var pwd = "guest-password";
 var hostport = "localhost:8443";
@@ -99,10 +100,13 @@ function callback(error, response, body) {
 function displayListings(body) {
   var obj = JSON.parse(body);
   console.log();
-  var listing;
+  var listing = "_";
   for(var i=0; i < obj.FileStatuses.FileStatus.length; i++){
-    listing = obj.FileStatuses.FileStatus[i].type + " " + 
-    obj.FileStatuses.FileStatus[i].permission + " " + 
+    if (obj.FileStatuses.FileStatus[i].type == "DIRECTORY" ) {
+      listing = "d";
+    }
+    listing = toSymbolic(parseInt(obj.FileStatuses.FileStatus[i].permission)) + " " +
+    obj.FileStatuses.FileStatus[i].permission + " " +
     obj.FileStatuses.FileStatus[i].owner + " " + 
     obj.FileStatuses.FileStatus[i].group + " " + 
     obj.FileStatuses.FileStatus[i].length + " " + 
@@ -119,13 +123,40 @@ function displayListing(filestatus) {
   var obj = JSON.parse(filestatus);
   console.log();
   console.log(obj.FileStatus.type + " " + 
-  obj.FileStatus.permission + " " + 
+  toSymbolic(parseInt(obj.FileStatus.permission)) + " " + 
   obj.FileStatus.owner + " " + 
   obj.FileStatus.group + " " + 
   obj.FileStatus.length + " " + 
   obj.FileStatus.modificationTime + " " + 
   obj.FileStatus.replication + " " +
   obj.FileStatus.pathSuffix);
+}
+
+function toSymbolic ( octal, output ) {
+	var digits, binary, block=[]
+		, output = output || 'array';
+		
+	if ( !isOctalValid( octal ) ) {
+		throw new Error( "Permission octal representation is not valid" );
+	}
+		
+	
+	digits = ( octal ).toString().split('');
+	
+	digits.forEach( function ( d, index ) {
+		var symbole = '';
+		binary = (parseInt(d)).toString(2);
+		symbole += ( binary >= 100 ) ? 'r' : '-';
+		symbole += ( (binary-100) >= 10 ) ? 'w' : '-';
+		symbole += ((binary-100) == 1 || (binary-110) == 1 ) ? 'x' : '-';
+		block[index] = symbole;
+	});
+	return ( 'string' == output.toLowerCase() ) ? block.join('') : block ;
+}
+
+function isOctalValid ( octal ) {
+	if ( !octal ) return false;
+	return !!( parseInt(octal) && octal > 100 && octal < 778 );	
 }
 
 function printBanner() {
