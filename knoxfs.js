@@ -111,7 +111,7 @@ function displayListings(body) {
     obj.FileStatuses.FileStatus[i].owner + " " + 
     obj.FileStatuses.FileStatus[i].group + " " + 
     obj.FileStatuses.FileStatus[i].length + " " + 
-    obj.FileStatuses.FileStatus[i].modificationTime + " " + 
+    getModificationTime(parseInt(obj.FileStatuses.FileStatus[i].modificationTime)) + " " + 
     obj.FileStatuses.FileStatus[i].replication + " " + 
     obj.FileStatuses.FileStatus[i].pathSuffix;
     console.log(listing);
@@ -132,9 +132,15 @@ function displayListing(filestatus) {
   obj.FileStatus.owner + " " + 
   obj.FileStatus.group + " " + 
   obj.FileStatus.length + " " + 
-  obj.FileStatus.modificationTime + " " + 
+  getModificationTime(parseInt(obj.FileStatus.modificationTime)) + " " + 
   obj.FileStatus.replication + " " +
   obj.FileStatus.pathSuffix);
+}
+
+function getModificationTime(modTimeMilliSecs) {
+  var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+  d.setUTCSeconds(modTimeMilliSecs/1000);
+  return d;
 }
 
 function toSymbolic ( octal, output ) {
