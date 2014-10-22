@@ -211,6 +211,8 @@ function validateDirectory(next) {
       prev = "" + wd;
       wd = next;
       console.log("");
+      rl.setPrompt('knoxfs' + wd + '> ');
+      rl.prompt();
       // console.log("prev: " + prev);
       // console.log("wd: " + wd);
     }
