@@ -37,23 +37,28 @@ This very simple CLI is handy for simple monitoring needs of files within HDFS t
 By leveraging the REST APIs exposed by Knox there is no need for a local Hadoop install for client libraries and configuration in order to access HDFS.
 ```
 Available KnoxFs Commands and Usage ---------------
-ls       - Usage: ls <path>
-lfs      - Usage: lfs <path>
-cat      - Usage: cat <path>
-append   - Usage: append <local-file-path> [<dest-file>]
-put      - Usage: put <local-file-path> [<dest-path>]
-chmod    - Usage: chmod <octal> <path>
-chown    - Usage: chown <owner[:group]> <path>
-rm       - Usage: rm <path>
-cd       - Usage: cd <path>
-pwd      - Usage: pwd
-mkdir    - Usage: mkdir <path>
-login    - Usage: login <username> <password>
-logout   - Usage: logout
-whoami   - Usage: whoami
-cluster  - Usage: cluster
-hostname - Usage: hostname
-mnt      - Usage: mnt <hostname:port> <cluster>
+ls        - Usage: ls <path>
+lfs       - Usage: lfs <path>
+cat       - Usage: cat <path>
+append    - Usage: append <local-file-path> [<dest-file>]
+put       - Usage: put <local-file-path> [<dest-path>]
+chmod     - Usage: chmod <octal> <path>
+chown     - Usage: chown <owner[:group]> <path>
+rm        - Usage: rm <path>
+cd        - Usage: cd <path>
+pwd       - Usage: pwd
+mkdir     - Usage: mkdir <path>
+login     - Usage: login <username> <password>
+logout    - Usage: logout
+whoami    - Usage: whoami
+cluster   - Usage: cluster
+hostname  - Usage: hostname
+mnt       - Usage: mnt <hostname:port> <cluster>
+{exec jar}- Usage: <path/filename>.jar [-cp=some.jar,someother.jar] classname [args...]
+ps        - Usage: ps
+job       - Usage: job
+kill      - Usage: kill
+
 ---------------------------------------------------
 ```
 
