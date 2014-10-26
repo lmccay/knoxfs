@@ -58,7 +58,6 @@ mnt       - Usage: mnt <hostname:port> <cluster>
 ps        - Usage: ps
 job       - Usage: job
 kill      - Usage: kill
-
 ---------------------------------------------------
 ```
 
