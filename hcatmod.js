@@ -90,7 +90,6 @@ function jar(jarname, libjars, classname, options,callback) {
   for (i = 0; i < options.arg.length; i++) {
     body += "&arg=" + options.arg[i];
   }
-  console.log("BODY::::: " + body);
   request.post({
     headers: {'content-type' : 'application/x-www-form-urlencoded'},
     url:     url,

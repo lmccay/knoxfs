@@ -510,17 +510,19 @@ rl.on('line', function(line) {
             // function jar(jar, libjars, classname, options,callback) {
             var libjars = "";
             var classname = "";
+            var offset = 3;
             if (array[1].startsWith("-cp=")) {
               libjars = array[1].substr(4);
               classname = array[2];
             }
             else {
               classname = array[1];
+              offset = 2;
             }
             var args = {};
             args['arg'] = [];
-            for (i = 3; i < array.length; i++) {
-              args['arg'][i-3] = array[i];
+            for (i = offset; i < array.length; i++) {
+              args['arg'][i-offset] = array[i];
             }
             console.log(args); 
             knoxcat.jar(array[0], libjars, array[2], args)
