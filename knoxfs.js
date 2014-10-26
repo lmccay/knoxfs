@@ -509,11 +509,21 @@ rl.on('line', function(line) {
             var knoxcat = new HCatRequest('https://' + hostport + '/gateway', cluster, user, pwd, callback);
             // function jar(jar, libjars, classname, options,callback) {
             var libjars = "";
+            var classname = "";
             if (array[1].startsWith("-cp=")) {
               libjars = array[1].substr(4);
+              classname = array[2];
             }
-            knoxcat.jar(array[0], libjars, array[2], {arg: array[3], arg: array[4]})
-            console.log(array); 
+            else {
+              classname = array[1];
+            }
+            var args = {};
+            args['arg'] = [];
+            for (i = 3; i < array.length; i++) {
+              args['arg'][i-3] = array[i];
+            }
+            console.log(args); 
+            knoxcat.jar(array[0], libjars, array[2], args)
           }
           else {
   	        console.log("-knoxfs: " + line + ": command not found")
