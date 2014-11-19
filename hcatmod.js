@@ -80,8 +80,6 @@ function jar(jarname, libjars, classname, options,callback) {
   var options = options || {};
   console.log("check the args: " + options);
   var version = options.version || "v1";
-  var classFile = options.classFile || "";
-  var libjars = options.libjars || "";
   url = this.knoxUrl + '/' + this.cluster + '/templeton/' + version + '/mapreduce/jar';
   var body = "jar=" + jarname + "&class=" + classname;
   if (libjars != "") {
@@ -90,13 +88,13 @@ function jar(jarname, libjars, classname, options,callback) {
   for (i = 0; i < options.arg.length; i++) {
     body += "&arg=" + options.arg[i];
   }
+console.log("url: " + url);
+console.log("body: " + body);
   request.post({
     headers: {'content-type' : 'application/x-www-form-urlencoded'},
     url:     url,
     body:    body
-  }, function(error, response, body){
-    console.log(body);
-  }).auth(this.user, this.pwd, true);
+  }, callback).auth(this.user, this.pwd, true);
 }
 
 function kill(jobid, callback) {

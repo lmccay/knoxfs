@@ -9,9 +9,12 @@ var hostport = "localhost:8443";
 var cluster = "sandbox";
 var wd = "/tmp/";
 var prev = "";
+var env = new Object();
 
 rl.setPrompt('knoxfs' + wd + '> ');
 rl.prompt();
+
+env.debug = true;
 
 if (typeof String.prototype.startsWith != 'function') {
   // see below for better implementation!
@@ -155,7 +158,9 @@ function hcatcallback(error, response, body) {
 
 function displayProcesses(body) {
   var obj = JSON.parse(body);
-  console.log('in displayProcesses');
+  // if (env.debug) {
+    console.log('in displayProcesses');
+  // }
   var listing = "_";
   for(var i=0; i < obj.length; i++){
     listing = "";
@@ -506,6 +511,13 @@ rl.on('line', function(line) {
           //   'wordcount/input',
           //   'wordcount/output' ]
           if (array[0].endsWith(".jar")) {
+            if (!array[0].startsWith("/")) {
+              path = wd + array[0];
+            }
+            else {
+              path = array[0];
+            }
+
             var knoxcat = new HCatRequest('https://' + hostport + '/gateway', cluster, user, pwd, callback);
             // function jar(jar, libjars, classname, options,callback) {
             var libjars = "";
@@ -525,7 +537,7 @@ rl.on('line', function(line) {
               args['arg'][i-offset] = array[i];
             }
             console.log(args); 
-            knoxcat.jar(array[0], libjars, array[2], args)
+            knoxcat.jar(path, libjars, classname, args)
           }
           else {
   	        console.log("-knoxfs: " + line + ": command not found")
