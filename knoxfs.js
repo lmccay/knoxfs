@@ -10,6 +10,7 @@ var cluster = "sandbox";
 var wd = "/tmp/";
 var prev = "";
 var env = new Object();
+var scheme = "http://"
 
 rl.setPrompt('knoxfs' + wd + '> ');
 rl.prompt();
@@ -291,7 +292,7 @@ function splash() {
 splash();
 
 function validateDirectory(next) {
-  var knox = new HDFSRequest('https://' + hostport + '/gateway', cluster, user, pwd);
+  var knox = new HDFSRequest(scheme + hostport + '/gateway', cluster, user, pwd);
   // console.log("validating: " + next);
   knox.listFileStatus({path: next}, function callback(error, response, body) {
     // console.log(response.statusCode);
@@ -348,7 +349,7 @@ rl.on('line', function(line) {
       splash();
       break;
     default:
-      var knox = new HDFSRequest('https://' + hostport + '/gateway', cluster, user, pwd);
+      var knox = new HDFSRequest(scheme + hostport + '/gateway', cluster, user, pwd);
 
       if (line.startsWith('ls ') || line == "ls") {
         var array = line.split(" ");
@@ -466,7 +467,14 @@ rl.on('line', function(line) {
       else if (line == 'logout') {
         user = "";
         pwd = "";
-      }      else if (line == 'whoami') {
+      }
+      else if (line == 'ssloff') {
+        scheme = "http://";
+      }
+      else if (line == 'sslon') {
+        scheme = "https://";
+      }
+      else if (line == 'whoami') {
         console.log(user);
       }
       else if (line == 'cluster') {
@@ -488,17 +496,17 @@ rl.on('line', function(line) {
         console.log("current working dir is: " + wd);
       }
       else if (line.startsWith('ps')) {
-        var knoxcat = new HCatRequest('https://' + hostport + '/gateway', cluster, user, pwd);
+        var knoxcat = new HCatRequest(scheme + hostport + '/gateway', cluster, user, pwd);
         knoxcat.jobs({showall: 'true', fields: '*'}, hcatcallback);
       }
       else if (line.startsWith('job ')) {
         var array = line.split(" ");
-        var knoxcat = new HCatRequest('https://' + hostport + '/gateway', cluster, user, pwd);
+        var knoxcat = new HCatRequest(scheme + hostport + '/gateway', cluster, user, pwd);
         knoxcat.job(array[1], callback);
       }
       else if (line.startsWith('kill ')) {
         var array = line.split(" ");
-        var knoxcat = new HCatRequest('https://' + hostport + '/gateway', cluster, user, pwd);
+        var knoxcat = new HCatRequest(scheme + hostport + '/gateway', cluster, user, pwd);
         knoxcat.kill(array[1], callback);
       }
       else {
@@ -518,7 +526,7 @@ rl.on('line', function(line) {
               path = array[0];
             }
 
-            var knoxcat = new HCatRequest('https://' + hostport + '/gateway', cluster, user, pwd, callback);
+            var knoxcat = new HCatRequest(scheme + hostport + '/gateway', cluster, user, pwd, callback);
             // function jar(jar, libjars, classname, options,callback) {
             var libjars = "";
             var classname = "";

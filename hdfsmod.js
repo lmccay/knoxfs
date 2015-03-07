@@ -1,3 +1,4 @@
+// var request = require('request').defaults({jar: true});
 var request = require('request');
 var fs = require('fs');
 
