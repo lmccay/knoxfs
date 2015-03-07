@@ -10,7 +10,7 @@ var cluster = "sandbox";
 var wd = "/tmp/";
 var prev = "";
 var env = new Object();
-var scheme = "http://"
+var scheme = "https://"
 
 rl.setPrompt('knoxfs' + wd + '> ');
 rl.prompt();
@@ -470,6 +470,9 @@ rl.on('line', function(line) {
       }
       else if (line == 'ssloff') {
         scheme = "http://";
+        console.log("WARNING: Traffic will be sent in clear text across the network.")
+        console.log("This includes username and password information and should be avoided.")
+        console.log("Please use sslon to turn security back on as soon as possible.")
       }
       else if (line == 'sslon') {
         scheme = "https://";
