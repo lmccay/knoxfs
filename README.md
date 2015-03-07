@@ -75,6 +75,22 @@ knoxfs/> mnt knoxhost:8443 topologyname
 Once you are logged in as your appropriate user and you have mounted the correct Knox topology, you may interact with HDFS
 through the available commands.
 
+```
+knoxfs/> ls
+knoxfs/>
+drwx,rwx,rwx 777 yarn hadoop 0 Tue Feb 10 2015 11:04:01 GMT-0500 (EST) 0 app-logs
+drwx,r-x,r-x 755 hdfs hdfs 0 Tue Feb 10 2015 10:58:26 GMT-0500 (EST) 0 apps
+drwx,r-x,r-x 755 hdfs hdfs 0 Tue Feb 10 2015 10:55:54 GMT-0500 (EST) 0 hdp
+drwx,r-x,r-x 755 mapred hdfs 0 Tue Feb 10 2015 10:55:15 GMT-0500 (EST) 0 mapred
+drwx,r-x,r-x 755 hdfs hdfs 0 Tue Feb 10 2015 10:55:15 GMT-0500 (EST) 0 mr-history
+drwx,r-x,r-x 755 hdfs hdfs 0 Tue Feb 10 2015 10:56:40 GMT-0500 (EST) 0 system
+drwx,rwx,rwx 777 hdfs hdfs 0 Tue Feb 10 2015 12:18:09 GMT-0500 (EST) 0 tmp
+drwx,r-x,r-x 755 hdfs hdfs 0 Tue Feb 10 2015 12:39:49 GMT-0500 (EST) 0 user
+
+8 listed.
+knoxfs/>
+```
+
 ## Known Issues - pull requests welcomed! :)
 * put does not work with Knox 0.4.0 or earlier releases - currently requires a build from master or branch v0.5.0
 * cat of large files out of memory's the process
