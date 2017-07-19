@@ -56,7 +56,6 @@ function printHelp() {
 }
 
 function callback(error, response, body) {
- // console.log(body);
  if (typeof response != 'undefined' && response.statusCode == 200 || typeof response != 'undefined' && response.statusCode == 201) {
    if (body[0] === '{' || body[0] === '[') {
      if (body.startsWith('{"FileStatuses')) {
@@ -149,6 +148,58 @@ function hcatcallback(error, response, body) {
    else {
      if (typeof response != 'undefined') {
        console.log(response.statusCode);
+     }
+   }
+ 	 if (error) {
+ 	   console.log(error);
+ 	 }
+  }
+}
+
+// This function is similar to the Callback above, this one is tailored towards requestify library.
+function requestifyCallback(error, response, body) {
+ if (typeof response != 'undefined' && response.getCode() == 200 || typeof response != 'undefined' && response.getCode() == 201) {
+   if (body[0] === '{' || body[0] === '[') {
+     if (body.startsWith('{"FileStatuses')) {
+       displayListings(body);
+     }
+     else if (body.startsWith('{"FileStatus"')) {
+       displayListing(body);
+     }
+     else {
+       process.stdout.write(JSON.stringify(JSON.parse(body), null, 2));
+     }
+   }
+   else {
+     console.log(body);
+   }
+   if(response.getCode() == 201) {
+     console.log("successfully created")
+   }
+   rl.prompt();
+ }
+ else {
+   if (response && response.getCode() == 403) {
+     console.log("permission denied");
+   }
+   else if (response && response.getCode() == 404) {
+     console.log("file not found");
+   }
+   else if (response && response.getCode() == 400) {
+     console.log("bad request");
+   }
+   else if (response && response.getCode() == 401) {
+     console.log("authentication required - try login");
+   }
+   else if (response && response.getCode() == 403) {
+     console.log("Forbidden - check the health of your cluster.");
+   }
+   else if (response && response.getCode() == 500) {
+     console.log("System Error: Please ensure that the correct Knox instance is mounted and that the topology url's are correct.");
+   }
+   else {
+     if (typeof response != 'undefined') {
+       console.log(response.getCode());
      }
    }
  	 if (error) {
@@ -413,7 +464,7 @@ rl.on('line', function(line) {
         else {
           path = wd + array[1].replace(/^.*[\\\/]/, '');
         }
-        knox.create(array[1], {path: path}, callback);
+		knox.create(array[1], {path: path}, requestifyCallback);
         // console.log("Not available yet.")
       }
       else if (line.startsWith('append ')) {

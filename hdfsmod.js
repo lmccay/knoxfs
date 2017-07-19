@@ -1,6 +1,8 @@
 // var request = require('request').defaults({jar: true});
 var request = require('request');
 var fs = require('fs');
+var requestify = require('requestify'); 
+
 
 function HDFSRequest(knoxUrl, cluster, user, pwd) {
   this.knoxUrl=knoxUrl;
@@ -127,43 +129,7 @@ function rm(options,callback) {
   options = mixin(options, {op: "DELETE"});
   this.remove(options, callback);
 }
-HDFSRequest.prototype.create = function create(localfile, options,callback) {
-  console.log(JSON.stringify(arguments));
-  var options = options || {};
-  var operation = options.op || "CREATE";
-  var path = options.path || "/tmp";
-  var version = options.version || "v1";
-  url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version + '/' + path + '?op=' + operation;
-  options = mixin(options, {uri: url, op: "CREATE", followRedirect: "false", jar: "true"});
-  console.log('url: ' + url);
-  // fs.createReadStream(localfile).pipe(request.put(url, callback).auth(this.user, this.pwd, true));
 
-  // send http request
-  request.put(options, function (error, response, body) {
-    // forward request error
-    if (error) return callback(error);
-    // check for expected redirect
-    if (response.statusCode == 307) {
-        // generate query string
-        options = mixin(options, {jar: "true", uri: response.headers.location, op: "CREATE", followRedirect: "false"});
-        // send http request
-        fs.createReadStream(localfile).pipe(request.put(response.headers.location, function (error, response, body) {
-            // forward request error
-            if (error) return callback(error);
-            // check for expected created response
-            if (response.statusCode == 201) {
-                // execute callback
-                return callback(null, response, response.headers.location);
-            } else {
-                return callback(new Error('expected http 201 created but received: ' + response.statusCode));   
-            } 
-       }).auth(this.user, this.pwd));
-    } else {
-        console.log(response.statusCode);
-        return callback(new Error('expected redirect'));   
-    }
-  }.bind(this)).auth(this.user, this.pwd, true);
-}
 HDFSRequest.prototype.append = function append(localfile, options,callback) {
   console.log(JSON.stringify(arguments));
   var options = options || {};
@@ -206,8 +172,75 @@ function mixin(target, source) {
   Object.keys(source).forEach(function(key) {
     target[key] = source[key];
   });
-  
+ 
   return target;
+}
+
+function create(localfile, options, callback) {
+	
+    var options = options || {};
+	var data = {}; 
+  
+    var operation = options.op || "CREATE";
+    var path = options.path || "/tmp";
+    var version = options.version || "v1";
+    url = this.knoxUrl + '/' + this.cluster + '/webhdfs/' + version +  path + '?op=' + operation;
+
+	var user = this.user;
+	var password = this.pwd;
+	
+	var response = requestify.put(url, data, {
+		
+		method: 'PUT',
+		headers: {
+		        'op': 'CREATE',
+				'followRedirect': 'false',
+				'jar':'true'
+		    },	
+		auth: {
+				username: user, 
+				password: password
+			}
+		
+	}).then(function(response) {
+		// For some reason Requistify does not consider 307 as success 
+		console.log('Response :'+response.getCode() );
+
+  	}).fail(function(response) {
+		// Even though we are under fail, 307 is not a failure in this case.
+	    if (response.getCode() == 307) {
+	        // generate query string
+	        options = mixin(options, {jar: "true", uri: response.headers.location, op: "APPEND", followRedirect: "false"});
+	        // send http request
+	        fs.createReadStream(localfile).pipe(
+				
+				requestify.put(response.headers.location, data, {
+		
+					method: 'PUT',
+					headers: {
+					        'op': 'APPEND',
+						'followRedirect': 'false',
+						'jar':'true'
+					    },	
+					auth: {
+							username: user, 
+							password: password
+						}
+		
+				}).then(function(response) {
+					callback(null, response, response.getBody());
+  				}).fail(function(response) {
+				    callback(new Error('expected http 200 created but received: ' + response.getCode())); 
+				})
+			);
+				
+		} else { // Genuine error
+        	console.log(response.getCode());
+        	callback(new Error('expected redirect'));   
+    	}
+		
+	});
+
 }
 
 HDFSRequest.prototype.listStatus=listStatus;
@@ -221,6 +254,6 @@ HDFSRequest.prototype.chmod=chmod;
 HDFSRequest.prototype.chown=chown;
 HDFSRequest.prototype.remove=remove;
 HDFSRequest.prototype.mkdirs=mkdirs;
-// HDFSRequest.prototype.create=create;
+HDFSRequest.prototype.create=create;
 HDFSRequest.prototype.rm=rm;
 module.exports=HDFSRequest;
