@@ -6,7 +6,8 @@
   "main": "knoxfs.js",
   "dependencies": {
     "request": "~2.27.0",
-    "readline": "~0.0.3"
+    "readline": "~0.0.3",
+	"requestify": "0.2.5"
   },
   "devDependencies": {},
   "scripts": {
