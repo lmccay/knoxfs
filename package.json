@@ -5,7 +5,7 @@
   "description": "Simple node.js CLI to interact with Hadoop behind an Apache Knox gateway",
   "main": "knoxfs.js",
   "dependencies": {
-    "request": "~2.27.0",
+    "request": "~2.68.0",
     "readline": "~0.0.3"
   },
   "devDependencies": {},
